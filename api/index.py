@@ -113,7 +113,5 @@ jobs:
 
 # What if query containes unique characters? How to handle that?
 
-# Hide user email - use an ID instead of plain email in yaml files
-
 if __name__ == '__main__':
     app.run(debug=True)
