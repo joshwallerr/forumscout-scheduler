@@ -101,7 +101,7 @@ jobs:
     """
 
     safe_query = urllib.parse.quote(scout['query'].replace(' ', '_'), safe='')
-    path = f".github/workflows/run_scout_{safe_query}_{scout['country']}.yml"
+    path = f".github/workflows/run_scout_{safe_query}_{scout['country']}_{str(user['_id'])}.yml"
 
     try:
         repo.create_file(path, f"Create action for scout {scout['query']}", workflow_content, branch="main")
