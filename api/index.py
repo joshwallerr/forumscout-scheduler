@@ -72,6 +72,12 @@ def create_github_action(scout):
 
     user = users.find_one({'email': scout['owner']})
 
+    data_json = json.dumps({
+        "owner": str(user['_id']),
+        "query": scout['query'],
+        "country": scout['country']
+    })
+
     # Generate the GitHub Action workflow content
     workflow_content = f"""
 name: Run Scout {scout['query']}
@@ -90,11 +96,7 @@ jobs:
           url: 'https://forumscout.app/run-scout'
           method: 'POST'
           contentType: 'application/json'
-          data: '{{
-            "owner": "{user['_id']}",
-            "query": "{scout['query']}",
-            "country": "{scout['country']}"
-          }}'
+          data: '{data_json}'
     """
 
     safe_query = urllib.parse.quote(scout['query'].replace(' ', '_'), safe='')
