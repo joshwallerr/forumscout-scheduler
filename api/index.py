@@ -114,7 +114,5 @@ jobs:
 
 # In /run-scouts get all scouts that have that query AND country and add results for all of them.
 
-# What if query containes unique characters? How to handle that?
-
 if __name__ == '__main__':
     app.run(debug=True)
