@@ -3,7 +3,7 @@ from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 import os
 from github import Github
-
+from bson import ObjectId
 
 
 app = Flask(__name__)
@@ -70,6 +70,8 @@ def create_github_action(scout):
     g = Github(token)
     repo = g.get_user().get_repo(repo_name)
 
+    user = users.find_one({'email': scout['owner']})
+
     # Generate the GitHub Action workflow content
     workflow_content = f"""
 name: Run Scout {scout['query']}
@@ -89,7 +91,7 @@ jobs:
           method: 'POST'
           contentType: 'application/json'
           data: '{{
-            "owner": "{scout['owner']}",
+            "owner": "{user['_id']}",
             "query": "{scout['query']}",
             "country": "{scout['country']}"
           }}'
