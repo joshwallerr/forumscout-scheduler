@@ -4,7 +4,7 @@ from pymongo.server_api import ServerApi
 import os
 from github import Github
 from bson import ObjectId
-
+import urllib.parse
 
 app = Flask(__name__)
 
@@ -97,8 +97,8 @@ jobs:
           }}'
     """
 
-    # Path where the GitHub Action will be saved - NEEDS TO BE CHANGED?
-    path = f".github/workflows/run_scout_{scout['query'].replace(' ', '_')}_{scout['country']}.yml"
+    safe_query = urllib.parse.quote(scout['query'].replace(' ', '_'), safe='')
+    path = f".github/workflows/run_scout_{safe_query}_{scout['country']}.yml"
 
     try:
         repo.create_file(path, f"Create action for scout {scout['query']}", workflow_content, branch="main")
