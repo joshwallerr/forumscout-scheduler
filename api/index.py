@@ -96,14 +96,14 @@ jobs:
     """
 
     # Path where the GitHub Action will be saved - NEEDS TO BE CHANGED?
-    path = f".github/workflows/run_scout_{scout['query'].replace(' ', '_')}.yml"
+    path = f".github/workflows/run_scout_{scout['query'].replace(' ', '_')}_{scout['country']}.yml"
 
-    contents = repo.get_contents(path)
-    if contents:
-        return "File already exists"
+    try:
+        repo.create_file(path, f"Create action for scout {scout['query']}", workflow_content, branch="main")
+    except GithubException as e:
+        return 'File already exists!'
 
-    # Commit the file to the repository
-    repo.create_file(path, f"Create action for scout {scout['query']}", workflow_content, branch="main")
+    return "GitHub Action created successfully!"
 
 
 
