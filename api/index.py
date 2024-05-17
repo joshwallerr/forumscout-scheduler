@@ -109,7 +109,7 @@ jobs:
 
 
 
-# In /run-scouts get all scouts that have that query and add results for all of them.
+# In /run-scouts get all scouts that have that query AND country and add results for all of them.
 
 # What if query containes unique characters? How to handle that?
 
