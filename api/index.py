@@ -85,7 +85,7 @@ jobs:
       - name: Send POST request
         uses: fjogeleit/http-request-action@master
         with:
-          url: 'https://yourdomain.com/run-scout'
+          url: 'https://forumscout.app/run-scout'
           method: 'POST'
           contentType: 'application/json'
           data: '{{
@@ -111,6 +111,7 @@ jobs:
 
 # What if query containes unique characters? How to handle that?
 
+# Hide user email - use an ID instead of plain email in yaml files
 
 if __name__ == '__main__':
     app.run(debug=True)
