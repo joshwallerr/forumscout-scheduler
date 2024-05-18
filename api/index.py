@@ -62,7 +62,7 @@ def delete_action():
     email = request.json['owner']
     country = request.json['country']
     query = request.json['query']
-    scout_id = request.json['scout_id']
+    scout_id = request.json['id']
 
     # Get the user from the database
     user = users.find_one({'email': email})
