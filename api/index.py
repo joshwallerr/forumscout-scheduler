@@ -24,17 +24,6 @@ def home():
 
 
 
-# @app.route('/run-scout', methods=['POST'])
-# def run_scout():
-#     email = request.json['email']
-#     query = request.json['query']
-    
-#     user = users.find_one({'email': email})
-
-
-
-
-#     return "Scout ran successfully"
 
 
 @app.route('/create-action', methods=['POST'])
@@ -150,7 +139,12 @@ jobs:
 
 
 
-# In /run-scouts get all scouts that have that query AND country and add results for all of them.
+# implement scout management - ADD, DELETE, EDIT.
+
+# implement feed
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
