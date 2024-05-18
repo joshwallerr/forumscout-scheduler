@@ -62,12 +62,13 @@ def delete_action():
     email = request.json['owner']
     country = request.json['country']
     query = request.json['query']
+    scout_id = request.json['scout_id']
 
     # Get the user from the database
     user = users.find_one({'email': email})
     
     # Get the scout from the database
-    scout = scouts.find_one({'query': query, 'country': country})
+    scout = scouts.find_one({'_id': ObjectId(scout_id)})
 
     if scout and user:
         delete_github_action(scout)
@@ -92,6 +93,7 @@ def delete_github_action(scout):
     try:
         contents = repo.get_contents(path)
         repo.delete_file(contents.path, f"Delete action for scout {scout['query']}", contents.sha, branch="main")
+        scouts.delete_one({'_id': scout['_id']})
     except GithubException as e:
         return 'File not found!'
 
