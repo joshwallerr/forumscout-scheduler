@@ -110,7 +110,7 @@ def delete_github_action(scout):
         repo.delete_file(contents.path, f"Delete action for scout {encrypted_query}", contents.sha, branch="main")
         scouts.delete_one({'_id': scout['_id']})
     except GithubException as e:
-        return 'File not found!'
+        return 'error: ' + str(e)
 
     return "GitHub Action deleted successfully!"
 
