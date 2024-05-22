@@ -99,12 +99,15 @@ def delete_github_action(scout):
 
     user = users.find_one({'email': scout['owner']})
 
-    safe_query = urllib.parse.quote(scout['query'].replace(' ', '_'), safe='')
-    path = f".github/workflows/run_scout_{safe_query}_{scout['country']}_{str(user['_id'])}.yml"
+    encrypted_query = encrypt_data(scout['query'])
+
+    # safe_query = urllib.parse.quote(scout['query'].replace(' ', '_'), safe='')
+
+    path = f".github/workflows/run_scout_{encrypted_query}_{scout['country']}_{str(user['_id'])}.yml"
 
     try:
         contents = repo.get_contents(path)
-        repo.delete_file(contents.path, f"Delete action for scout {scout['query']}", contents.sha, branch="main")
+        repo.delete_file(contents.path, f"Delete action for scout {encrypted_query}", contents.sha, branch="main")
         scouts.delete_one({'_id': scout['_id']})
     except GithubException as e:
         return 'File not found!'
@@ -123,15 +126,17 @@ def create_github_action(scout):
 
     user = users.find_one({'email': scout['owner']})
 
+    encrypted_query = encrypt_data(scout['query'])
+
     data_json = json.dumps({
         "owner": str(user['_id']),
-        "query": scout['query'],
+        "query": encrypted_query,
         "country": scout['country']
     })
 
     # Generate the GitHub Action workflow content
     workflow_content = f"""
-name: Run Scout {scout['query']}
+name: Run Scout {encrypted_query}
 
 on:
   schedule:
@@ -150,11 +155,11 @@ jobs:
           data: '{data_json}'
     """
 
-    safe_query = urllib.parse.quote(scout['query'].replace(' ', '_'), safe='')
-    path = f".github/workflows/run_scout_{safe_query}_{scout['country']}_{str(user['_id'])}.yml"
+    # safe_query = urllib.parse.quote(scout['query'].replace(' ', '_'), safe='')
+    path = f".github/workflows/run_scout_{encrypted_query}_{scout['country']}_{str(user['_id'])}.yml"
 
     try:
-        repo.create_file(path, f"Create action for scout {scout['query']}", workflow_content, branch="main")
+        repo.create_file(path, f"Create action for scout {encrypted_query}", workflow_content, branch="main")
     except GithubException as e:
         return 'File already exists!'
 
