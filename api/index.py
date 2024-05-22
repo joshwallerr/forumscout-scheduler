@@ -63,9 +63,9 @@ def create_action():
 
     if scout and user:
         create_github_action(scout)
-        return "GitHub Action created successfully"
+        return jsonify({"message": "GitHub Action created successfully"}), 200
     else:
-        return "User or scout not found"
+        return jsonify({"message": "User or scout not found"}), 404
 
 
 
@@ -84,9 +84,9 @@ def delete_action():
 
     if scout and user:
         delete_github_action(scout)
-        return "GitHub Action deleted successfully"
+        return jsonify({"message": "GitHub Action deleted successfully"}), 200
     else:
-        return "User or scout not found"
+        return jsonify({"message": "User or scout not found"}), 404
 
 
 
@@ -99,21 +99,18 @@ def delete_github_action(scout):
 
     user = users.find_one({'email': scout['owner']})
 
-    encrypted_query = encrypt_data(scout['query'])
-
-    # safe_query = urllib.parse.quote(scout['query'].replace(' ', '_'), safe='')
-
-    path = f".github/workflows/run_scout_{encrypted_query}_{scout['country']}_{str(user['_id'])}.yml"
+    # Using ObjectId (or another unique, consistent scout identifier) in the file path
+    path = f".github/workflows/run_scout_{scout['_id']}.yml"
 
     try:
         contents = repo.get_contents(path)
-        repo.delete_file(contents.path, f"Delete action for scout {encrypted_query}", contents.sha, branch="main")
+        repo.delete_file(contents.path, f"Delete action for scout {scout['query']}", contents.sha, branch="main")
         scouts.delete_one({'_id': scout['_id']})
+        return "GitHub Action deleted successfully!"
     except GithubException as e:
         print(e)
-        return jsonify({'error': 'File not found!'})
+        return 'File not found!'
 
-    return "GitHub Action deleted successfully!"
 
 
 
@@ -126,7 +123,6 @@ def create_github_action(scout):
     repo = g.get_user().get_repo(repo_name)
 
     user = users.find_one({'email': scout['owner']})
-
     encrypted_query = encrypt_data(scout['query'])
 
     data_json = json.dumps({
@@ -137,7 +133,7 @@ def create_github_action(scout):
 
     # Generate the GitHub Action workflow content
     workflow_content = f"""
-name: Run Scout {encrypted_query}
+name: Run Scout {scout['_id']}
 
 on:
   schedule:
@@ -157,10 +153,10 @@ jobs:
     """
 
     # safe_query = urllib.parse.quote(scout['query'].replace(' ', '_'), safe='')
-    path = f".github/workflows/run_scout_{encrypted_query}_{scout['country']}_{str(user['_id'])}.yml"
+    path = f".github/workflows/run_scout_{scout['_id']}.yml"
 
     try:
-        repo.create_file(path, f"Create action for scout {encrypted_query}", workflow_content, branch="main")
+        repo.create_file(path, f"Create action for scout {scout['query']}", workflow_content, branch="main")
     except GithubException as e:
         return 'File already exists!'
 
