@@ -18,7 +18,6 @@ users = db.users
 scouts = db.scouts
 
 
-
 key = os.environ.get('ENCRYPTION_KEY')
 cipher_suite = Fernet(key)
 
