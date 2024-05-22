@@ -6,6 +6,8 @@ from github import Github
 from bson import ObjectId
 import urllib.parse
 import json
+from cryptography.fernet import Fernet
+
 
 app = Flask(__name__)
 
@@ -14,6 +16,27 @@ client = MongoClient(app.config["MONGO_URI"], server_api=ServerApi('1'))
 db = client.forumscout
 users = db.users
 scouts = db.scouts
+
+
+
+key = os.environ.get('ENCRYPTION_KEY')
+cipher_suite = Fernet(key)
+
+
+def encrypt_data(data):
+    """Encrypts data."""
+    return cipher_suite.encrypt(data.encode())
+
+def decrypt_data(encrypted_data):
+    """Decrypts data."""
+    try:
+        return cipher_suite.decrypt(encrypted_data.encode()).decode()
+    except Exception as e:
+        print(f"Decryption failed: {e}")
+        return None
+
+
+
 
 
 
