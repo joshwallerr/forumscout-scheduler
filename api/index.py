@@ -7,7 +7,7 @@ from bson import ObjectId
 import urllib.parse
 import json
 from cryptography.fernet import Fernet
-
+import base64
 
 app = Flask(__name__)
 
@@ -23,13 +23,15 @@ cipher_suite = Fernet(key)
 
 
 def encrypt_data(data):
-    """Encrypts data."""
-    return cipher_suite.encrypt(data.encode())
+    """Encrypts data and returns a base64-encoded string."""
+    encrypted_data = cipher_suite.encrypt(data.encode())
+    return base64.b64encode(encrypted_data).decode('utf-8')
 
 def decrypt_data(encrypted_data):
-    """Decrypts data."""
+    """Decrypts data from a base64-encoded string."""
     try:
-        return cipher_suite.decrypt(encrypted_data.encode()).decode()
+        base64_decoded = base64.b64decode(encrypted_data)
+        return cipher_suite.decrypt(base64_decoded).decode('utf-8')
     except Exception as e:
         print(f"Decryption failed: {e}")
         return None
