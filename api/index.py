@@ -1,4 +1,4 @@
-from flask import Flask, redirect, request
+from flask import Flask, redirect, request, jsonify
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 import os
@@ -110,7 +110,8 @@ def delete_github_action(scout):
         repo.delete_file(contents.path, f"Delete action for scout {encrypted_query}", contents.sha, branch="main")
         scouts.delete_one({'_id': scout['_id']})
     except GithubException as e:
-        return 'error: ' + str(e)
+        print(e)
+        return jsonify({'error': 'File not found!'})
 
     return "GitHub Action deleted successfully!"
 
