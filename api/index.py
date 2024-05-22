@@ -39,7 +39,6 @@ def decrypt_data(encrypted_data):
 
 
 
-
 @app.route('/')
 def home():
     return redirect('https://forumscout.app', code=301)
