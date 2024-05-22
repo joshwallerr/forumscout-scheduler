@@ -2,7 +2,7 @@ from flask import Flask, redirect, request
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 import os
-from github import Github
+from github import Github, GithubException
 from bson import ObjectId
 import urllib.parse
 import json
