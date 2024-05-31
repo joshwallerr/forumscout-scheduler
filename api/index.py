@@ -54,12 +54,13 @@ def create_action():
     email = request.json['owner']
     country = request.json['country']
     query = request.json['query']
+    scout_id = request.json['id']
 
     # Get the user from the database
     user = users.find_one({'email': email})
     
     # Get the scout from the database
-    scout = scouts.find_one({'query': query, 'country': country})
+    scout = scouts.find_one({'_id': ObjectId(scout_id)})
 
     if scout and user:
         create_github_action(scout)
@@ -156,7 +157,7 @@ jobs:
     path = f".github/workflows/run_scout_{scout['_id']}.yml"
 
     try:
-        repo.create_file(path, f"Create action for scout {scout['query']}", workflow_content, branch="main")
+        repo.create_file(path, f"Create action for scout {scout['_id']}", workflow_content, branch="main")
     except GithubException as e:
         return 'File already exists!'
 
