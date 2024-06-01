@@ -139,6 +139,7 @@ name: Run Scout {scout['_id']}
 on:
   schedule:
     - cron:  '0 * * * *'
+  workflow_dispatch:
 
 jobs:
   run-scout:
@@ -162,13 +163,29 @@ jobs:
     except GithubException as e:
         return 'File already exists!'
 
+    # run the action immediately here
+    trigger_github_action(repo, scout)
+
     return "GitHub Action created successfully!"
 
 
 
-# implement scout management - ADD, DELETE, EDIT.
+def trigger_github_action(repo, scout):
+    from requests import post
 
-# implement feed
+    url = f"https://api.github.com/repos/{repo.full_name}/actions/workflows/run_scout_{scout['_id']}.yml/dispatches"
+    headers = {
+        'Authorization': f'token {os.environ.get("GITHUB_TOKEN")}',
+        'Accept': 'application/vnd.github.v3+json'
+    }
+    data = {
+        'ref': 'main'  # or branch name where the workflow file is
+    }
+    response = post(url, headers=headers, json=data)
+    if response.status_code == 204:
+        return "Action triggered successfully!"
+    else:
+        return f"Failed to trigger action: {response.content}"
 
 
 
