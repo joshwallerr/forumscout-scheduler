@@ -151,6 +151,7 @@ jobs:
           method: 'POST'
           contentType: 'application/json'
           data: '{data_json}'
+          timeout: 15000
     """
 
     # safe_query = urllib.parse.quote(scout['query'].replace(' ', '_'), safe='')
