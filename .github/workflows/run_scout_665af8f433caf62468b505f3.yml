@@ -1,5 +1,5 @@
 
-name: Run Scout 665af80a33caf62468b505f2
+name: Run Scout 665af8f433caf62468b505f3
 
 on:
   schedule:
@@ -16,6 +16,6 @@ jobs:
           url: 'https://forumscout.app/run-scout'
           method: 'POST'
           contentType: 'application/json'
-          data: '{"owner": "6629ad0552eac6c74473cb3e", "query": "Z0FBQUFBQm1XdmdMZ3diVFF6bEZsSXJxSHdDY2lleS1pOTJKU3lEUU11bS1FZlJMbGFESEl4anpjVzJ3RWU0QUxMS3YwY1lHZHFpYnJlTFdUcThMa3ZHQ1M2SGZxSzVyNnc9PQ==", "country": "any"}'
+          data: '{"owner": "6629ad0552eac6c74473cb3e", "query": "Z0FBQUFBQm1XdmoxWExfa0ZxekowWEhYLUhYRlJTUk52THFMZHFWS0RTdkNQdmUwSnFMbk9hSXhNRW5IZUtVSWJETXY5ZGd1SGZGQzJBaWRtTUprRmk1SGh6cXM0LUo4WUE9PQ==", "country": "any"}'
           timeout: 15000
     
