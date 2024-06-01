@@ -184,8 +184,10 @@ def trigger_github_action(repo, scout):
     }
     response = post(url, headers=headers, json=data)
     if response.status_code == 204:
+        print("Action triggered successfully!")
         return "Action triggered successfully!"
     else:
+        print(f"Failed to trigger action: {response.content}")
         return f"Failed to trigger action: {response.content}"
 
 
