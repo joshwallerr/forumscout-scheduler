@@ -177,24 +177,31 @@ jobs:
 
 
 def trigger_github_action(repo, scout):
-    # Format the workflow file name for the URL
+    # URL-encode the workflow file name (excluding '.yml')
     workflow_file_name = f"run_scout_{scout['_id']}"
-    encoded_workflow_file_name = quote(workflow_file_name)  # URL-encode the workflow name
+    encoded_workflow_file_name = quote(workflow_file_name + '.yml')  # Including '.yml' because GitHub uses the filename
 
-    print(repo.full_name, workflow_file_name)
+    print(f"Repository Full Name: {repo.full_name}")
+    print(f"Workflow File Name: {workflow_file_name}")
+    print(f"Encoded Workflow File Name: {encoded_workflow_file_name}")
 
-    # Define the API URL
-    url = f"https://api.github.com/repos/{repo.full_name}/actions/workflows/{workflow_file_name}/dispatches"
+    # Define the API URL using the encoded workflow file name
+    url = f"https://api.github.com/repos/{repo.full_name}/actions/workflows/{encoded_workflow_file_name}/dispatches"
 
-    print(url)
+    print(f"API URL: {url}")
 
     # Setup the headers and data payload
     headers = {
         'Authorization': f'token {os.environ.get("GITHUB_TOKEN")}',
-        'Accept': 'application/vnd.github.v3+json'
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28'
     }
     data = {
-        'ref': 'main'  # Adjust this to the branch where the workflow file resides
+        'ref': 'main',  # Adjust this to the branch where the workflow file resides
+        'inputs': {  # Optional, only if your workflow expects inputs
+            'name': 'Mona the Octocat',
+            'home': 'San Francisco, CA'
+        }
     }
 
     # Make the API request
@@ -203,8 +210,8 @@ def trigger_github_action(repo, scout):
         print("Action triggered successfully!")
         return "Action triggered successfully!"
     else:
-        print(f"Failed to trigger action: {response.content}")
-        return f"Failed to trigger action: {response.content}"
+        print(f"Failed to trigger action: {response.content.decode()}")  # Decode to make it readable
+        return f"Failed to trigger action: {response.content.decode()}"
 
 
 
