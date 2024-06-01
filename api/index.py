@@ -198,10 +198,6 @@ def trigger_github_action(repo, scout):
     }
     data = {
         'ref': 'main',  # Adjust this to the branch where the workflow file resides
-        'inputs': {  # Optional, only if your workflow expects inputs
-            'name': 'Mona the Octocat',
-            'home': 'San Francisco, CA'
-        }
     }
 
     # Make the API request
