@@ -10,6 +10,7 @@ from cryptography.fernet import Fernet
 import base64
 from requests import post
 from urllib.parse import quote
+import time
 
 app = Flask(__name__)
 
@@ -164,6 +165,8 @@ jobs:
         repo.create_file(path, f"Create action for scout {scout['_id']}", workflow_content, branch="main")
     except GithubException as e:
         return 'File already exists!'
+
+    time.sleep(10)
 
     # run the action immediately here
     trigger_github_action(repo, scout)
