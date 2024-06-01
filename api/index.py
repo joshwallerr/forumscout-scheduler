@@ -8,6 +8,7 @@ import urllib.parse
 import json
 from cryptography.fernet import Fernet
 import base64
+from requests import post
 
 app = Flask(__name__)
 
@@ -171,7 +172,7 @@ jobs:
 
 
 def trigger_github_action(repo, scout):
-    from requests import post
+    print(f"Triggering action for scout {scout['_id']}")
 
     url = f"https://api.github.com/repos/{repo.full_name}/actions/workflows/run_scout_{scout['_id']}.yml/dispatches"
     headers = {
