@@ -181,8 +181,12 @@ def trigger_github_action(repo, scout):
     workflow_file_name = f"run_scout_{scout['_id']}"
     encoded_workflow_file_name = quote(workflow_file_name)  # URL-encode the workflow name
 
+    print(repo.full_name, workflow_file_name)
+
     # Define the API URL
-    url = f"https://api.github.com/repos/{repo.full_name}/actions/workflows/{encoded_workflow_file_name}/dispatches"
+    url = f"https://api.github.com/repos/{repo.full_name}/actions/workflows/{workflow_file_name}/dispatches"
+
+    print(url)
 
     # Setup the headers and data payload
     headers = {
