@@ -9,6 +9,7 @@ import json
 from cryptography.fernet import Fernet
 import base64
 from requests import post
+from urllib.parse import quote
 
 app = Flask(__name__)
 
@@ -171,17 +172,25 @@ jobs:
 
 
 
-def trigger_github_action(repo, scout):
-    print(f"Triggering action for scout {scout['_id']}")
 
-    url = f"https://api.github.com/repos/{repo.full_name}/actions/workflows/run_scout_{scout['_id']}.yml/dispatches"
+def trigger_github_action(repo, scout):
+    # Format the workflow file name for the URL
+    workflow_file_name = f"run_scout_{scout['_id']}"
+    encoded_workflow_file_name = quote(workflow_file_name)  # URL-encode the workflow name
+
+    # Define the API URL
+    url = f"https://api.github.com/repos/{repo.full_name}/actions/workflows/{encoded_workflow_file_name}/dispatches"
+
+    # Setup the headers and data payload
     headers = {
         'Authorization': f'token {os.environ.get("GITHUB_TOKEN")}',
         'Accept': 'application/vnd.github.v3+json'
     }
     data = {
-        'ref': 'main'  # or branch name where the workflow file is
+        'ref': 'main'  # Adjust this to the branch where the workflow file resides
     }
+
+    # Make the API request
     response = post(url, headers=headers, json=data)
     if response.status_code == 204:
         print("Action triggered successfully!")
