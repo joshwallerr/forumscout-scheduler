@@ -166,10 +166,10 @@ jobs:
     except GithubException as e:
         return 'File already exists!'
 
-    time.sleep(10)
+    # time.sleep(10)
 
-    # run the action immediately here
-    trigger_github_action(repo, scout)
+    # # run the action immediately here
+    # trigger_github_action(repo, scout)
 
     return "GitHub Action created successfully!"
 
