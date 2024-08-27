@@ -1,0 +1,14 @@
+name: Daily POST Request
+
+on:
+  schedule:
+    - cron: '21 12 * * *'  # Runs at 12:21 PM UTC every day
+
+jobs:
+  send_request:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Send POST request
+      run: |
+        curl -X POST https://forumscout.app/hy79vfgsvb
