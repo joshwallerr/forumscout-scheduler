@@ -2,13 +2,16 @@ name: Daily POST Request
 
 on:
   schedule:
-    - cron: '21 12 * * *'  # Runs at 12:21 PM UTC every day
+    - cron: '21 12 * * *'
+  workflow_dispatch:
 
 jobs:
-  send_request:
+  send_post_request:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Send POST request
-      run: |
-        curl -X POST https://forumscout.app/hy79vfgsvb
+      - name: Send POST request
+        uses: fjogeleit/http-request-action@master
+        with:
+          url: 'https://forumscout.app/hy79vfgsvb'
+          method: 'POST'
+          timeout: 15000
