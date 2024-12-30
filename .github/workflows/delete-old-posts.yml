@@ -1,0 +1,17 @@
+name: Daily POST Request 2
+
+on:
+  schedule:
+    - cron: '31 12 * * *'
+  workflow_dispatch:
+
+jobs:
+  send_post_request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send POST request
+        uses: fjogeleit/http-request-action@master
+        with:
+          url: 'https://forumscout.app/delete-old-posts'
+          method: 'POST'
+          timeout: 15000
