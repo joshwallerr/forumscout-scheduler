@@ -1,0 +1,18 @@
+name: Update Homepage Stats
+
+on:
+  schedule:
+    # Runs at minute 53 every 3 hours (00:53, 03:53, 06:53, etc.)
+    - cron: '53 */3 * * *'
+  
+  # Optional: Allow manual triggering of the workflow
+  workflow_dispatch:
+
+jobs:
+  update-stats:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Send POST request to update homepage stats
+        run: |
+          curl -X POST https://forumscout.app/get-homepage-stats
