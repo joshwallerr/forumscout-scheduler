@@ -1,0 +1,21 @@
+
+name: Run Scout 6824f5651c09b92a434ebaf4
+
+on:
+  schedule:
+    - cron:  '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  run-scout:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send POST request
+        uses: fjogeleit/http-request-action@master
+        with:
+          url: 'https://forumscout.app/run-scout'
+          method: 'POST'
+          contentType: 'application/json'
+          data: '{"owner": "6824f4fb04df47de19011a95", "query": "Z0FBQUFBQm9KUFZvNjFjWk85S0FxMDNnSE4wNVc4NG1UMm9IaWJXcGpfems3c1pKS3Nta3hIUEExZGUyT2U3NGRFaWIwSlpyOV9vUWhZWU9JRk9DMVZhQ0xNTlRIbmZ3WEJBOHZ5QUxIM05Cano4ekotMEVLVUU9", "country": "any"}'
+          timeout: 15000
+    
